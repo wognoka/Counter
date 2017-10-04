@@ -12,6 +12,8 @@ class ViewController: UIViewController {
     
     var second = 0
     var timer = Timer()
+    var prgNum : Float = 0
+    
 
     @IBOutlet weak var actionViewOutlet: UIView!
     @IBOutlet weak var stepper: UIStepper!
@@ -20,30 +22,51 @@ class ViewController: UIViewController {
     @IBAction func stepperAction(_ sender: UIStepper) {
         countdownLabel.text! = String(Int(sender.value))
         print(sender.value)
-        progressBar.progress = 0.0
+       // progressBar.progress = 0.0
+        second = Int(sender.value)
+        prgNum = 1 / Float(second)
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         print("Ekrana dokundun")
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.timerFunc), userInfo: nil, repeats: true)
+        actionViewOutlet.isHidden = true
+        self.view.backgroundColor = UIColor.green
+        progressBar.setProgress(1, animated: false)
+        
+        
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         print("Elini Çektin")
+        timer.invalidate()
+        
+        actionViewOutlet.isHidden = false
+        
     }
     
     @objc func timerFunc(){
         print("çalışıyor")
+        
+
         if second <= 0 {
             timer.invalidate()
+            return
 
         }
+
         else
         {
-             second -= 1
+            second -= 1
+            countdownLabel.text = String(second)
+            progressBar.progress -= prgNum
+          
         }
         print(second)
      }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        progressBar.progress = 1
+        //progressBar.setProgress(1, animated: false)
         // Do any additional setup after loading the view, typically from a nib.
     }
 
