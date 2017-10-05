@@ -13,7 +13,9 @@ class ViewController: UIViewController {
     var second = 0
     var timer = Timer()
     var prgNum : Float = 0
-    
+    var start : Int = 0
+    var timeArray = [Int]()
+    var time = 0
 
     @IBOutlet weak var actionViewOutlet: UIView!
     @IBOutlet weak var stepper: UIStepper!
@@ -23,8 +25,11 @@ class ViewController: UIViewController {
         countdownLabel.text! = String(Int(sender.value))
         print(sender.value)
        // progressBar.progress = 0.0
+  
+        timeArray.removeAll()
         second = Int(sender.value)
         prgNum = 1 / Float(second)
+        
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         print("Ekrana dokundun")
@@ -32,14 +37,28 @@ class ViewController: UIViewController {
         actionViewOutlet.isHidden = true
         self.view.backgroundColor = UIColor.green
         progressBar.setProgress(1, animated: false)
+        time = 0
         
         
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         print("Elini Çektin")
         timer.invalidate()
-        
+        var sonuc = ""
         actionViewOutlet.isHidden = false
+        
+        if second != 0{
+            
+        timeArray.append(time)
+        for i in timeArray
+        {
+            sonuc += "\(i) sn \n"
+        }
+        print(sonuc)
+            
+            
+       }
+        
         
     }
     
@@ -49,16 +68,26 @@ class ViewController: UIViewController {
 
         if second <= 0 {
             timer.invalidate()
+            
             return
 
         }
 
         else
         {
+            
             second -= 1
+            
+            time += 1
+            
             countdownLabel.text = String(second)
+            
             progressBar.progress -= prgNum
-          
+            
+        
+            
+            
+            
         }
         print(second)
      }
